@@ -10,6 +10,16 @@ function gsapAnimation() {
     delay: 1,
   });
 
+  gsap.to(".progress-bar ", {
+    opacity: 1,
+    delay: 1,
+  });
+
+  gsap.to(".sidebar", {
+    opacity: 1,
+    delay: 7,
+  });
+
   gsap.to(".box", {
     opacity: 1,
     delay: 3,
@@ -22,7 +32,11 @@ gsapAnimation();
 
 const boxes = document.getElementsByClassName("box");
 
-function buttonColorChange() {
+function buttonStateChange() {
+  let completedTask = 0;
+  const totalTasks = parseInt(boxes.length);
+  console.log(totalTasks);
+
   for (let i = 0; i < boxes.length; i++) {
     let isComplete = false;
 
@@ -30,16 +44,21 @@ function buttonColorChange() {
       if (!isComplete) {
         boxes[i].style.backgroundColor = `#4CAF50`;
         boxes[i].style.textDecoration = `line-through`;
+        completedTask++;
       } else {
         boxes[i].style.backgroundColor = `#8892B0`;
         boxes[i].style.textDecoration = `none`;
+        completedTask--;
       }
       isComplete = !isComplete;
+
+      const progressPercent = Math.ceil((completedTask / totalTasks) * 100);
+      updateProgress(progressPercent);
     });
   }
 }
 
-buttonColorChange();
+buttonStateChange();
 
 let blur = document.getElementById("blur");
 
@@ -124,7 +143,9 @@ for (let modalId in closeButtons) {
   });
 }
 
-function updateProgress(percent) {
-  const progressBar = document.querySelector(".progress");
-  progressBar.style.width = percent + "%";
+function updateProgress(progress) {
+  let progressbar = document.querySelector(".progress")
+  console.log(progress);
+  progressbar.style.width = `${progress}%`
+  progressbar.innerText = `${progress}%`
 }
