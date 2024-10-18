@@ -1,0 +1,163 @@
+:root {
+  --background: #0a192f;
+  --text: #ffffff;
+  --accents: #64ffda;
+  --secondary: #8892b0;
+  --nav: #112240;
+  --nav-hover-text: #64ffda;
+  --modal: #1e2a45;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+}
+
+.nav {
+  background: var(--nav);
+  opacity: 0.85;
+  color: var(--text);
+}
+.nav h1:hover {
+  color: var(--nav-hover-text);
+}
+.nav h2:hover {
+  color: var(--nav-hover-text);
+}
+.box {
+  background: var(--secondary);
+  height: 70px;
+  width: 175px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  margin-bottom: 40px;
+  cursor: pointer;
+  opacity: 0;
+  border-radius: 14px;
+}
+
+.box:hover {
+  background: var(--accents);
+  color: var(--background);
+}
+
+.roadmap-container {
+  position: relative;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.text {
+  opacity: 0;
+  border-right: 3px solid #d6d6d6;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(55), cursor 0.4s step-end infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+.roadmap-container#blur.active {
+  filter: blur(40px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  padding: 50px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  background: var(--modal);
+  display: none;
+  transition: 0.5s;
+}
+
+.modal h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.modal ul {
+  padding: 15px;
+  text-transform: capitalize;
+  list-style: circle;
+}
+
+.modal a {
+  text-decoration: underline;
+}
+
+.modal button {
+  padding: 10px 15px;
+  background: var(--secondary);
+}
+
+.sidebar {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(30, 42, 69, 0.8); /* Light navy with some transparency */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #64FFDA; /* Accent color */
+  font-weight: bold;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transition: all 0.3s ease;
+}
+
+.sidebar:hover {
+  background-color: rgba(30, 42, 69, 1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.left {
+  left: 20px;
+}
+
+.sidebar.right {
+  right: 20px;
+}
+
+/* Progress bar styles */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #1E2A45;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress {
+  width: 0%; /* Set this dynamically with JavaScript */
+  height: 100%;
+  background-color: #64FFDA;
+  transition: width 0.5s ease;
+}

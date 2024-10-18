@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: hand;
+  src: url(./assets/IndieFlower-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 700;
+}
