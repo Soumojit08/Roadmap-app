@@ -144,8 +144,12 @@ for (let modalId in closeButtons) {
 }
 
 function updateProgress(progress) {
-  let progressbar = document.querySelector(".progress")
+  let progressbar = document.querySelector(".progress");
   console.log(progress);
-  progressbar.style.width = `${progress}%`
-  progressbar.innerText = `${progress}%`
+  progressbar.style.width = `${progress}%`;
+  if (progress != 0) {
+    progressbar.innerText = `${progress}%`;
+  } else {
+    progressbar.innerText = "";
+  }
 }
