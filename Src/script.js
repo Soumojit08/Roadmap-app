@@ -1,7 +1,13 @@
+// GSAP Animation Function
 function gsapAnimation() {
   gsap.from(".nav", {
     opacity: 0,
     y: "-80px",
+    duration: 1,
+  });
+
+  gsap.to("footer", {
+    opacity: 1,
     duration: 1,
   });
 
@@ -10,7 +16,7 @@ function gsapAnimation() {
     delay: 1,
   });
 
-  gsap.to(".progress-bar ", {
+  gsap.to(".progress-bar", {
     opacity: 1,
     delay: 1,
   });
@@ -28,38 +34,78 @@ function gsapAnimation() {
   });
 }
 
+// Call the animation function
 gsapAnimation();
 
+// Get all boxes
 const boxes = document.getElementsByClassName("box");
+let clickTimeout;
 
+// Function to manage button state changes
 function buttonStateChange() {
   let completedTask = 0;
   const totalTasks = parseInt(boxes.length);
   console.log(totalTasks);
 
+  // Load the completion state from local storage
+  const storedStates = JSON.parse(localStorage.getItem("taskStates")) || {};
+
   for (let i = 0; i < boxes.length; i++) {
-    let isComplete = false;
+    let isComplete = storedStates[i] || false; // Get the stored state or default to false
+
+    // Update the UI based on the stored state
+    if (isComplete) {
+      boxes[i].style.backgroundColor = `#4CAF50`;
+      boxes[i].style.textDecoration = `line-through`;
+      completedTask++;
+    }
 
     boxes[i].addEventListener("click", () => {
-      if (!isComplete) {
-        boxes[i].style.backgroundColor = `#4CAF50`;
-        boxes[i].style.textDecoration = `line-through`;
-        completedTask++;
-      } else {
-        boxes[i].style.backgroundColor = `#8892B0`;
-        boxes[i].style.textDecoration = `none`;
-        completedTask--;
-      }
-      isComplete = !isComplete;
+      // Clear the timeout if it exists
+      clearTimeout(clickTimeout);
 
-      const progressPercent = Math.ceil((completedTask / totalTasks) * 100);
-      updateProgress(progressPercent);
+      // Set a new timeout to execute the single click event
+      clickTimeout = setTimeout(() => {
+        isComplete = !isComplete; // Toggle completion state
+
+        // Update the UI
+        if (isComplete) {
+          boxes[i].style.backgroundColor = `#4CAF50`;
+          boxes[i].style.textDecoration = `line-through`;
+          completedTask++;
+        } else {
+          boxes[i].style.backgroundColor = `#8892B0`;
+          boxes[i].style.textDecoration = `none`;
+          completedTask--;
+        }
+
+        // Update local storage
+        storedStates[i] = isComplete;
+        localStorage.setItem("taskStates", JSON.stringify(storedStates));
+
+        // Calculate and update progress
+        const progressPercent = Math.ceil((completedTask / totalTasks) * 100);
+        updateProgress(progressPercent);
+      }, 300); // Delay for single click action
+    });
+
+    boxes[i].addEventListener("dblclick", (event) => {
+      // Prevent the single click event from executing
+      clearTimeout(clickTimeout);
+      const modalId = boxes[i].getAttribute("data-modal");
+      openModal(modalId);
     });
   }
+
+  // Calculate and set initial progress
+  const initialProgressPercent = Math.ceil((completedTask / totalTasks) * 100);
+  updateProgress(initialProgressPercent);
 }
 
+// Call the function to initialize the button states and progress
 buttonStateChange();
 
+// Modal functionality
 let blur = document.getElementById("blur");
 
 // Get all modals
@@ -118,11 +164,13 @@ let closeButtons = {
   javascript: document.getElementById("javascript-close"),
 };
 
+// Open modal function
 function openModal(modalId) {
   blur.classList.add("active");
   modals[modalId].style.display = "block";
 }
 
+// Close modal function
 function closeModal(modalId) {
   blur.classList.remove("active");
   modals[modalId].style.display = "none";
@@ -143,11 +191,12 @@ for (let modalId in closeButtons) {
   });
 }
 
+// Update progress function
 function updateProgress(progress) {
   let progressbar = document.querySelector(".progress");
   console.log(progress);
   progressbar.style.width = `${progress}%`;
-  if (progress != 0) {
+  if (progress !== 0) {
     progressbar.innerText = `${progress}%`;
   } else {
     progressbar.innerText = "";
